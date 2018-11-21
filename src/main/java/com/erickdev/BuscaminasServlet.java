@@ -19,7 +19,6 @@ import java.io.PrintWriter;
 
 import com.google.gson.*;
 
-
 @WebServlet(name="buscaminasServlet", urlPatterns={"/buscaminas"}, loadOnStartup=1)
 public class BuscaminasServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -27,7 +26,7 @@ public class BuscaminasServlet extends HttpServlet {
     private Gson gson = new Gson();
 
     public BuscaminasServlet() {}
-    
+
     @Override
     public void init() {
         log.debug("BuscaminasServlet init...");
@@ -37,6 +36,7 @@ public class BuscaminasServlet extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Loging endpoint
         log.debug("BuscaminasServlet service...");
+
         String name = "Buscaminas", version="V0.1";
         request.setAttribute("name", name); // Esto estará disponible como ${name}   
         request.setAttribute("version", version); // Esto estará disponible como ${version}   

@@ -3,7 +3,7 @@
 }
 
 .empty-block{
-    background-color: aqua;
+    background-color: lightgray;
     height: 2rem;
     padding-top: 4px;
     text-align: center;
@@ -11,7 +11,15 @@
 }
 
 .bomb-block{
-    background-color: darkgrey;
+    background-color: red;
+    height: 2rem;
+    padding-top: 4px;
+    text-align: center;
+    width: 2rem;    
+}
+
+.explore-block{
+    background-color: green;
     height: 2rem;
     padding-top: 4px;
     text-align: center;

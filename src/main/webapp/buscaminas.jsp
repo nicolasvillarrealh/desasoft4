@@ -9,11 +9,15 @@
             <div class="row pt-5 pb-3">
                 <div class="col-12">
                     <h1>
-                        <% String name = (String)request.getAttribute("name");
-                           out.print(name);%>
+                        <%
+                        String name = (String)request.getAttribute("name");
+                           out.print(name);
+                           %>
                         <span>
-                            <% String version = (String)request.getAttribute("version");
-                               out.print(version); %>
+                            <%  
+                            String version = (String)request.getAttribute("version");
+                               out.print(version);
+                               %>
                         </span>
                     </h1>
                 </div>
@@ -23,6 +27,7 @@
                     <!-- Buscaminas Board -->
                     <div class="minesweeper-container"></div>
                 </div>
+                <hr>
             </div>
         </div>
     <script src="./static/js/main.js"></script>
