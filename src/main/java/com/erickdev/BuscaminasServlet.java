@@ -19,6 +19,7 @@ import java.io.PrintWriter;
 
 import com.google.gson.*;
 
+
 @WebServlet(name="buscaminasServlet", urlPatterns={"/buscaminas"}, loadOnStartup=1)
 public class BuscaminasServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
