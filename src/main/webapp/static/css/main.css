@@ -8,9 +8,9 @@ table {
 }
 
 td{
-    height: 4rem;
-    width: 4rem; 
-    font-size: 2.5rem;  
+    height: 3rem;
+    width: 3rem; 
+    font-size: 1.5rem;  
     padding: 0px;
     
 }
@@ -20,7 +20,7 @@ div:text{
 }
 
 .app-title{
-    background-image: url('../graphics/SVG/BM-Title.svg');
+    background-image: url('../../static/graphics/SVG/BM-Title.svg');
     background-repeat: no-repeat;
     height: 7rem;
     align-content: center;
@@ -28,7 +28,7 @@ div:text{
 
 .empty-block{
     /*background-color: lightgray;*/
-    background-image: url('../graphics/SVG/BM-Empty.svg');
+    background-image: url('../../static/graphics/SVG/BM-Empty.svg');
     background-repeat: no-repeat;
     text-align: center;
     height: 100%;
@@ -38,7 +38,7 @@ div:text{
 
 .sensor-block{
     /*background-color: lightgray;*/
-    background-image: url('../graphics/SVG/BM-Sensor.svg');
+    background-image: url('../../static/graphics/SVG/BM-Sensor.svg');
     background-repeat: no-repeat;
     color: white;
     text-align: center;
@@ -49,7 +49,7 @@ div:text{
 
 .bomb-block{
     /*background-color: red;*/
-    background-image: url('../graphics/SVG/BM-Explore.svg');
+    background-image: url('../../static/graphics/SVG/BM-Explore.svg');
     background-repeat: no-repeat;
     text-align: center;
     height: 100%;
@@ -59,7 +59,7 @@ div:text{
 
 .bomb-explosion-block{
     /*background-color: red;*/
-    background-image: url('../graphics/SVG/BM-Bomb.svg');
+    background-image: url('../../static/graphics/SVG/BM-Bomb.svg');
     background-repeat: no-repeat;
     text-align: center;
     height: 100%;
@@ -69,7 +69,7 @@ div:text{
 
 .explore-block{
     /*background-color: green;*/
-    background-image: url('../graphics/SVG/BM-Explore.svg');
+    background-image: url('../../static/graphics/SVG/BM-Explore.svg');
     background-repeat: no-repeat;
     color: white;
     text-align: center;
@@ -80,7 +80,7 @@ div:text{
 
 .explored-block{
     /*background-color: brown;*/
-    background-image: url('../graphics/SVG/BM-Explored.svg');
+    background-image: url('../../static/graphics/SVG/BM-Explored.svg');
     background-repeat: no-repeat;
     color: white;
     text-align: center;
@@ -91,7 +91,7 @@ div:text{
 
 .mark-block{
     /*background-color: black;*/
-    background-image: url('../graphics/SVG/BM-Mark.svg');
+    background-image: url('../../static/graphics/SVG/BM-Mark.svg');
     background-repeat: no-repeat;
     text-align: center;
     height: 100%;
@@ -100,13 +100,13 @@ div:text{
 }
 
 .explosion-panel{
-    background-image: url('../graphics/SVG/BM-Explosion.svg');
+    background-image: url('../../static/graphics/SVG/BM-Explosion.svg');
     height: 100%;
     background-repeat: no-repeat;
 }
 
 .winner-panel{
-    background-image: url('../graphics/SVG/BM-Winner.svg');
+    background-image: url('../../static/graphics/SVG/BM-Winner.svg');
     height: 100%;
     background-repeat: no-repeat;
 }
@@ -132,12 +132,12 @@ div:text{
 }
 
 .btn-explore{
-    background-image: url('../graphics/SVG/BM-Btn-Explore.svg');
+    background-image: url('../../static/graphics/SVG/BM-Btn-Explore.svg');
     background-repeat: no-repeat;
 }
 
 .btn-mark{
-    background-image: url('../graphics/SVG/BM-Btn-Mark.svg');
+    background-image: url('../../static/graphics/SVG/BM-Btn-Mark.svg');
     background-repeat: no-repeat;
 }
 

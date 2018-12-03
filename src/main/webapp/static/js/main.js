@@ -14,7 +14,7 @@ var App = {
         minutosLbl: document.querySelector('.js-cron-minutos'),
     },
     estado: {
-        nivel: 10,
+        nivel: 16,
         appMode: 'prod',
         currentExploreBlock: '',
         currentEploreMode: 'manual', //manual: por click, auto: por propagación al explorar Empty Block 
@@ -144,8 +144,8 @@ var App = {
 
         for (var i = 1; i <= nivel; i++) {
 
-            var randomX = Math.floor(10 * Math.random());
-            var randomY = Math.floor(10 * Math.random());
+            var randomX = Math.floor(nivel * Math.random());
+            var randomY = Math.floor(nivel * Math.random());
 
             //console.log('Plantando Bomba (' + i + ') en: ' + randomX + ":" + randomY);
 
