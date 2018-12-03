@@ -1,29 +1,82 @@
 var App = {
     htmlElements: {
         board: document.querySelector('.minesweeper-container'),
+        restartBtn: document.querySelector('.js-btn-restart'),
         exploreBtn: document.querySelector('.js-btn-explore'),
         markBtn: document.querySelector('.js-btn-mark'),
         markLbl: document.querySelector('.js-lbl-marks'),
-        winnerPnl: document.querySelector('.js-panel-winner')
+        closedLbl: document.querySelector('.js-lbl-closed'),
+        tituloPnl: document.querySelector('.js-app-titulo'),
+        estadoPnl: document.querySelector('.js-app-estatus'),
+        resultPnl: document.querySelector('.js-panel-result'),
+        resultModalPnl: document.querySelector('.js-modal-panel-result'),
+        segundosLbl: document.querySelector('.js-cron-segundos'),
+        minutosLbl: document.querySelector('.js-cron-minutos'),
     },
     estado: {
         nivel: 10,
+        appMode: 'prod',
         currentExploreBlock: '',
+        currentEploreMode: 'manual', //manual: por click, auto: por propagación al explorar Empty Block 
         currentAction: 'explore', //explore, mark
         currentMarks: 0,
-        currentClosed: 0
+        currentClosed: 0,
+        currentEstado: 'juega', //juega, gana, pierde 
+        cronometro: null
     },
     init: function(){
         App.initHandlers();
         //console.log('Initializing App')
+
         App.initBoardDrawing();
         App.plantBombs();
+
+        if(App.estado.appMode === 'demo'){
+            App.htmlElements.estadoPnl.classList.add('visible');
+            App.htmlElements.estadoPnl.classList.remove('invisible');
+        }else{
+            App.htmlElements.estadoPnl.classList.remove('visible');
+            App.htmlElements.estadoPnl.classList.add('invisible');
+        }
+
+        App.initCronometro();
+        
+    },
+
+    initCronometro: function(){
+
+        var contador_s = 0;
+        var contador_m = 0;
+        var s = App.htmlElements.segundosLbl;
+        var m = App.htmlElements.minutosLbl;
+        
+        App.estado.cronometro = setInterval(function(){
+                if(contador_s == 60){
+                    contador_s = 0;
+                    contador_m++;
+                    
+                    m.innerHTML = contador_m;
+
+                    if(contador_m == 60){
+                        contador_m = 0;
+                    }
+                }
+                s.innerHTML = contador_s;
+                contador_s++;
+            },1000);
+            
+    },
+
+    stopCronometro: function(){
+        clearInterval(App.estado.cronometro);
     },
 
     initBoardDrawing: function() {
         //console.log('Init BoardDrawing Board');
 
         var nivel = App.estado.nivel;
+
+        App.htmlElements.tituloPnl.classList.add('app-title');
 
         var divEmp = document.createElement('div'), text = document.createTextNode('');
         divEmp.appendChild(text);
@@ -67,10 +120,10 @@ var App = {
 
         // posiciona el <tbody> debajo del elemento <table>
         tabla.appendChild(tblBody);
+
         // appends <table> into <body>
         App.htmlElements.board.appendChild(tabla);
-        // modifica el atributo "border" de la tabla y lo fija a "2";
-        tabla.setAttribute("border", "2");
+        
 
         App.setEstadoMarks(nivel);
         App.htmlElements.markLbl.innerHTML = App.estado.currentMarks;
@@ -83,7 +136,11 @@ var App = {
 
         var divBom = document.createElement('div'), text = document.createTextNode('');
         divBom.appendChild(text);
-        divBom.className += 'bomb-block';
+        if(App.estado.appMode === 'demo'){
+            divBom.className += 'bomb-explosion-block';
+        }else{
+            divBom.className += 'bomb-block';
+        }
 
         for (var i = 1; i <= nivel; i++) {
 
@@ -100,6 +157,7 @@ var App = {
                 celda.appendChild(cln);
                 celda.setAttribute("data-block-type","B");
                 celda.setAttribute("data-block-status","C"); //C: Close, O:Open
+                celda.addEventListener('click', App.handleExploreBlock);
             }else{
                 i--;
             }
@@ -137,9 +195,17 @@ var App = {
                 var prevText = celda.textContent;
                 var senText = '';
                 if(prevText === ''){
-                    senText = document.createTextNode('1');
+                    //senText = document.createTextNode('1');
+                    
+                    senText = document.createElement("span");
+                    senText.innerHTML = '1';
+                    senText.classList.add('invisible');
+                    
                 }else{
-                    senText = document.createTextNode(parseInt(prevText) + 1);
+                    //senText = document.createTextNode(parseInt(prevText) + 1);
+                    senText = document.createElement("span");
+                    senText.innerHTML = parseInt(prevText) + 1;
+                    senText.classList.add('invisible');
                 }
 
                 var cln = divSen.cloneNode(true);
@@ -171,9 +237,17 @@ var App = {
                 var prevText = celda.textContent;
                 var senText = '';
                 if(prevText === ''){
-                    senText = document.createTextNode('1');
+                    //senText = document.createTextNode('1');
+                    
+                    senText = document.createElement("span");
+                    senText.innerHTML = '1';
+                    senText.classList.add('invisible');
+                    
                 }else{
-                    senText = document.createTextNode(parseInt(prevText) + 1);
+                    //senText = document.createTextNode(parseInt(prevText) + 1);
+                    senText = document.createElement("span");
+                    senText.innerHTML = parseInt(prevText) + 1;
+                    senText.classList.add('invisible');
                 }
 
                 var cln = divSen.cloneNode(true);
@@ -205,9 +279,17 @@ var App = {
                 var prevText = celda.textContent;
                 var senText = '';
                 if(prevText === ''){
-                    senText = document.createTextNode('1');
+                    //senText = document.createTextNode('1');
+                    
+                    senText = document.createElement("span");
+                    senText.innerHTML = '1';
+                    senText.classList.add('invisible');
+                    
                 }else{
-                    senText = document.createTextNode(parseInt(prevText) + 1);
+                    //senText = document.createTextNode(parseInt(prevText) + 1);
+                    senText = document.createElement("span");
+                    senText.innerHTML = parseInt(prevText) + 1;
+                    senText.classList.add('invisible');
                 }
 
                 var cln = divSen.cloneNode(true);
@@ -244,9 +326,17 @@ var App = {
                 var prevText = celda.textContent;
                 var senText = '';
                 if(prevText === ''){
-                    senText = document.createTextNode('1');
+                    //senText = document.createTextNode('1');
+                    
+                    senText = document.createElement("span");
+                    senText.innerHTML = '1';
+                    senText.classList.add('invisible');
+                    
                 }else{
-                    senText = document.createTextNode(parseInt(prevText) + 1);
+                    //senText = document.createTextNode(parseInt(prevText) + 1);
+                    senText = document.createElement("span");
+                    senText.innerHTML = parseInt(prevText) + 1;
+                    senText.classList.add('invisible');
                 }
 
                 var cln = divSen.cloneNode(true);
@@ -278,9 +368,17 @@ var App = {
                 var prevText = celda.textContent;
                 var senText = '';
                 if(prevText === ''){
-                    senText = document.createTextNode('1');
+                    //senText = document.createTextNode('1');
+                    
+                    senText = document.createElement("span");
+                    senText.innerHTML = '1';
+                    senText.classList.add('invisible');
+                    
                 }else{
-                    senText = document.createTextNode(parseInt(prevText) + 1);
+                    //senText = document.createTextNode(parseInt(prevText) + 1);
+                    senText = document.createElement("span");
+                    senText.innerHTML = parseInt(prevText) + 1;
+                    senText.classList.add('invisible');
                 }
 
                 var cln = divSen.cloneNode(true);
@@ -312,9 +410,17 @@ var App = {
                 var prevText = celda.textContent;
                 var senText = '';
                 if(prevText === ''){
-                    senText = document.createTextNode('1');
+                    //senText = document.createTextNode('1');
+                    
+                    senText = document.createElement("span");
+                    senText.innerHTML = '1';
+                    senText.classList.add('invisible');
+                    
                 }else{
-                    senText = document.createTextNode(parseInt(prevText) + 1);
+                    //senText = document.createTextNode(parseInt(prevText) + 1);
+                    senText = document.createElement("span");
+                    senText.innerHTML = parseInt(prevText) + 1;
+                    senText.classList.add('invisible');
                 }
 
                 var cln = divSen.cloneNode(true);
@@ -351,9 +457,17 @@ var App = {
                 var prevText = celda.textContent;
                 var senText = '';
                 if(prevText === ''){
-                    senText = document.createTextNode('1');
+                    //senText = document.createTextNode('1');
+                    
+                    senText = document.createElement("span");
+                    senText.innerHTML = '1';
+                    senText.classList.add('invisible');
+                    
                 }else{
-                    senText = document.createTextNode(parseInt(prevText) + 1);
+                    //senText = document.createTextNode(parseInt(prevText) + 1);
+                    senText = document.createElement("span");
+                    senText.innerHTML = parseInt(prevText) + 1;
+                    senText.classList.add('invisible');
                 }
 
                 var cln = divSen.cloneNode(true);
@@ -385,9 +499,17 @@ var App = {
                 var prevText = celda.textContent;
                 var senText = '';
                 if(prevText === ''){
-                    senText = document.createTextNode('1');
+                    //senText = document.createTextNode('1');
+                    
+                    senText = document.createElement("span");
+                    senText.innerHTML = '1';
+                    senText.classList.add('invisible');
+                    
                 }else{
-                    senText = document.createTextNode(parseInt(prevText) + 1);
+                    //senText = document.createTextNode(parseInt(prevText) + 1);
+                    senText = document.createElement("span");
+                    senText.innerHTML = parseInt(prevText) + 1;
+                    senText.classList.add('invisible');
                 }
 
                 var cln = divSen.cloneNode(true);
@@ -505,8 +627,12 @@ var App = {
     initClickBtns: function(){
         App.htmlElements.exploreBtn.addEventListener('click', App.handleExploreBtn);
         App.htmlElements.markBtn.addEventListener('click', App.handleMarkBtn);
+        App.htmlElements.resultPnl.addEventListener('click', App.handleResultPnl);
+        App.htmlElements.restartBtn.addEventListener('click',App.handleRestartBtn);
     },
-
+    handleRestartBtn: function(){
+        location.reload();
+    },
     handleExploreBtn: function (e) {
         App.setEstadoAction('explore');
     },
@@ -515,7 +641,14 @@ var App = {
         App.setEstadoAction('mark');
     },
 
+    handleResultPnl: function(){
+        var modal = App.htmlElements.resultModalPnl;
+        modal.style.display = "none";
+    },
+
     handleExploreBlock: function (e) {
+
+        App.estado.currentEploreMode = 'manual';
 
         App.estado.currentExploreBlock = this.id;
 
@@ -529,9 +662,17 @@ var App = {
             }
         }
 
-        console.log(App.estado.currentClosed);
-        if(parseInt(App.estado.currentClosed) === 0){
-           App.htmlElements.winnerPnl.innerHTML = 'GANADOR';
+        //console.log(App.estado.currentClosed);
+        if(parseInt(App.estado.currentClosed) === 0 && App.estado.currentEstado === 'juega'){
+            App.htmlElements.resultPnl.classList.add('winner-panel');
+
+            var modal = App.htmlElements.resultModalPnl;
+            modal.style.display = "block";
+
+            App.stopCronometro();
+
+            App.estado.currentEstado = 'gana' //juega, gana, pierde 
+
         }
     },
 
@@ -554,8 +695,12 @@ var App = {
             celda.appendChild(cln);
 
             App.setEstadoMarks(-1);
-            App.setEstadoClosed(+1);
+            if(celda.getAttribute("data-block-type") !== 'B'){
+                App.setEstadoClosed(+1);
+            }
+            
             App.htmlElements.markLbl.innerHTML = App.estado.currentMarks;
+            App.htmlElements.closedLbl.innerHTML = App.estado.currentClosed;
         }
 
     },
@@ -566,7 +711,7 @@ var App = {
 
         var divExpd = document.createElement('div'), text = document.createTextNode('');
         divExpd.appendChild(text);
-        divExpd.className += 'explored-block';
+        
 
         var celda = document.getElementById(id);
         var prevText = celda.textContent;
@@ -584,6 +729,17 @@ var App = {
                     senText = document.createTextNode(prevText);
                 }
 
+                if(celda.getAttribute("data-block-type") === "E"){
+                    //Hole Graphic only for clicked Block
+                    if(App.estado.currentEploreMode === 'manual'){
+                        divExpd.className += 'explored-block';
+                    }else{
+                        divExpd.className += 'empty-block';
+                    }
+                }else{
+                    divExpd.className += 'sensor-block';
+                }                
+
                 celda.setAttribute("data-block-status","O"); //C: Close, O:Open
                 var cln = divExpd.cloneNode(true);
                 cln.appendChild(senText);
@@ -599,19 +755,62 @@ var App = {
                 if(prevText === ''){
                     //App.exploreNears(arrId[0],arrId[1]);
                     arrNearBlocks.forEach(function(cValue){ 
+                        App.estado.currentEploreMode = 'auto';
                         App.estado.currentExploreBlock = cValue;
                         App.exploreBlock();
                     });
                 }
 
                 App.setEstadoClosed(+1);
+                App.htmlElements.closedLbl.innerHTML = App.estado.currentClosed;
+
+            }
+        }else{
+
+            App.chainExplosion();
+
+        }
+        
+        return true;
+    },
+
+    chainExplosion: function(){
+
+        var divBom = document.createElement('div'), text = document.createTextNode('');
+        divBom.appendChild(text);
+        divBom.className += 'bomb-explosion-block';
+
+        var nivel = parseInt(App.estado.nivel);
+
+        for (var x = 0; x < nivel; x++) {
+            for (var y = 0; y < nivel; y++) {
+    
+                celda = document.getElementById(x + ':' + y);
+                if(celda.getAttribute("data-block-type") === "B"){
+
+                    celda.setAttribute("data-block-status","O"); //C: Close, O:Open
+                    var cln = divBom.cloneNode(true);
+                    //cln.appendChild(senText);
+        
+                    celda.removeChild(celda.childNodes[0]);
+                    celda.appendChild(cln);
+
+                }
 
             }
         }
-        
 
-        return true;
-    },
+        App.htmlElements.resultPnl.classList.add('explosion-panel');
+
+        var modal = App.htmlElements.resultModalPnl;
+        modal.style.display = "block";
+
+        App.stopCronometro();
+
+        App.estado.currentEstado = 'pierde' //juega, gana, pierde 
+
+    }
+
     //
 
 }
