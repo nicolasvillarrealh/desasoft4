@@ -15,9 +15,9 @@ var App = {
     },
     estado: {
         nivel: 16,
-        appMode: 'prod',
+        appMode: 'demo', //prod, demo
         currentExploreBlock: '',
-        currentEploreMode: 'manual', //manual: por click, auto: por propagación al explorar Empty Block 
+        currentExploreMode: 'manual', //manual: por click, auto: por propagación al explorar Empty Block 
         currentAction: 'explore', //explore, mark
         currentMarks: 0,
         currentClosed: 0,
@@ -78,9 +78,11 @@ var App = {
 
         App.htmlElements.tituloPnl.classList.add('app-title');
 
+        /*
         var divEmp = document.createElement('div'), text = document.createTextNode('');
         divEmp.appendChild(text);
         divEmp.className += 'empty-block';
+        */
     
 
         var divExp = document.createElement('div'), text = document.createTextNode('');
@@ -127,12 +129,23 @@ var App = {
 
         App.setEstadoMarks(nivel);
         App.htmlElements.markLbl.innerHTML = App.estado.currentMarks;
-        App.setEstadoClosed((parseInt(nivel) * parseInt(nivel) - nivel) * -1);
+
+        
     },
 
     plantBombs: function() {
-
         var nivel = App.estado.nivel;
+        var minas = 0;
+
+        if(nivel == 8){
+            minas = 10;
+        }else if (nivel == 16){
+            minas = 40;
+        }else{
+            minas = 0;
+        }
+         
+        App.setEstadoClosed(((parseInt(nivel) * parseInt(nivel)) - minas) * -1);
 
         var divBom = document.createElement('div'), text = document.createTextNode('');
         divBom.appendChild(text);
@@ -142,7 +155,7 @@ var App = {
             divBom.className += 'bomb-block';
         }
 
-        for (var i = 1; i <= nivel; i++) {
+        for (var i = 1; i <= minas; i++) {
 
             var randomX = Math.floor(nivel * Math.random());
             var randomY = Math.floor(nivel * Math.random());
@@ -648,7 +661,7 @@ var App = {
 
     handleExploreBlock: function (e) {
 
-        App.estado.currentEploreMode = 'manual';
+        App.estado.currentExploreMode = 'manual';
 
         App.estado.currentExploreBlock = this.id;
 
@@ -731,7 +744,7 @@ var App = {
 
                 if(celda.getAttribute("data-block-type") === "E"){
                     //Hole Graphic only for clicked Block
-                    if(App.estado.currentEploreMode === 'manual'){
+                    if(App.estado.currentExploreMode === 'manual'){
                         divExpd.className += 'explored-block';
                     }else{
                         divExpd.className += 'empty-block';
@@ -755,7 +768,7 @@ var App = {
                 if(prevText === ''){
                     //App.exploreNears(arrId[0],arrId[1]);
                     arrNearBlocks.forEach(function(cValue){ 
-                        App.estado.currentEploreMode = 'auto';
+                        App.estado.currentExploreMode = 'auto';
                         App.estado.currentExploreBlock = cValue;
                         App.exploreBlock();
                     });
