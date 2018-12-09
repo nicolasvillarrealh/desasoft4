@@ -19,29 +19,29 @@ import java.io.PrintWriter;
 
 import com.google.gson.*;
 
-
-@WebServlet(name="buscaminasServlet", urlPatterns={"/buscaminas"}, loadOnStartup=1)
-public class BuscaminasServlet extends HttpServlet {
+@WebServlet(name="buscaminasMejoresServlet", urlPatterns={"/buscaminas/mejores"}, loadOnStartup=1)
+public class BuscaminasMejoresServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static Logger log = LoggerFactory.getLogger(BuscaminasServlet.class);
+    private static Logger log = LoggerFactory.getLogger(BuscaminasMejoresServlet.class);
     private Gson gson = new Gson();
 
-    public BuscaminasServlet() {}
+    public BuscaminasMejoresServlet() {}
 
     @Override
     public void init() {
-        log.debug("BuscaminasServlet init...");
+        log.debug("MejoresServlet init...");
     }
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Loging endpoint
-        log.debug("BuscaminasServlet service...");
+        log.debug("BuscaminasMejoresServlet service...");
 
-        String name = "Buscaminas", version="V0.1";
-        request.setAttribute("name", name); // Esto estará disponible como ${name}   
-        request.setAttribute("version", version); // Esto estará disponible como ${version}   
-        request.getRequestDispatcher("/buscaminas.jsp").forward(request, response);
+        //String name = "Mejores", version="V0.1";
+        //request.setAttribute("name", name); // Esto estará disponible como ${name}   
+        //request.setAttribute("version", version); // Esto estará disponible como ${version}   
+        
+        request.getRequestDispatcher("/mejores.jsp").forward(request, response);
     }
 
 }

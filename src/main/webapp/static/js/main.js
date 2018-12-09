@@ -9,13 +9,15 @@ var App = {
         tituloPnl: document.querySelector('.js-app-titulo'),
         estadoPnl: document.querySelector('.js-app-estatus'),
         resultPnl: document.querySelector('.js-panel-result'),
+        guardarPnl: document.querySelector('.js-panel-guardar'),
         resultModalPnl: document.querySelector('.js-modal-panel-result'),
         segundosLbl: document.querySelector('.js-cron-segundos'),
         minutosLbl: document.querySelector('.js-cron-minutos'),
+        resultTiempo: document.querySelector('.js-input-tiempo')
     },
     estado: {
         nivel: 16,
-        appMode: 'demo', //prod, demo
+        appMode: 'prod', //prod, demo
         currentExploreBlock: '',
         currentExploreMode: 'manual', //manual: por click, auto: por propagación al explorar Empty Block 
         currentAction: 'explore', //explore, mark
@@ -38,6 +40,9 @@ var App = {
             App.htmlElements.estadoPnl.classList.remove('visible');
             App.htmlElements.estadoPnl.classList.add('invisible');
         }
+
+        App.htmlElements.guardarPnl.classList.remove('visible');
+        App.htmlElements.guardarPnl.classList.add('invisible');
 
         App.initCronometro();
         
@@ -68,6 +73,14 @@ var App = {
     },
 
     stopCronometro: function(){
+
+        App.htmlElements.resultTiempo.value = App.htmlElements.minutosLbl.innerHTML + ":" + App.htmlElements.segundosLbl.innerHTML; 
+
+        if(App.estado.currentEstado === 'gana'){
+            App.htmlElements.guardarPnl.classList.add('visible');
+            App.htmlElements.guardarPnl.classList.remove('invisible');
+        }
+
         clearInterval(App.estado.cronometro);
     },
 
@@ -144,7 +157,9 @@ var App = {
         }else{
             minas = 0;
         }
-         
+        
+        //
+
         App.setEstadoClosed(((parseInt(nivel) * parseInt(nivel)) - minas) * -1);
 
         var divBom = document.createElement('div'), text = document.createTextNode('');
